@@ -2,18 +2,19 @@
 
 namespace App\Models;
 
+use App\Traits\UserObserver;
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Auth\Authorizable;
+use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Authenticatable, Authorizable, HasFactory;
+    use Authenticatable, Authorizable, HasFactory, UserObserver;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +22,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password'
+        'name', 'email', 'password', 'client_id', 'client_secret'
     ];
 
     /**
@@ -48,5 +49,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $pass = Hash::make(($attribute));
 
         $this->attributes['password'] = $pass;
+    }
+
+    public function setClientIdAttribute($attribute)
+    {
+        $this->attributes['client_id'] = 'client_id_'.$attribute;
+    }
+
+    public function setClientSecretAttribute($attribute)
+    {
+        $this->attributes['client_secret'] = 'client_secret_'.$attribute;
     }
 }
