@@ -113,4 +113,17 @@ $app->router->group([
     require __DIR__.'/../routes/web.php';
 });
 
+/*
+|--------------------------------------------------------------------------
+| Register mail
+|--------------------------------------------------------------------------
+|
+*/
+
+$app->configure('mail');
+$app->register(\Illuminate\Mail\MailServiceProvider::class);
+$app->alias('mailer', Illuminate\Mail\Mailer::class);
+$app->alias('mailer', Illuminate\Contracts\Mail\Mailer::class);
+$app->alias('mailer', Illuminate\Contracts\Mail\MailQueue::class);
+
 return $app;
