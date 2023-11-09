@@ -10,12 +10,12 @@ class Controller extends BaseController
 {
     use ApiResponser;
 
-    protected function respondeWithToken($token)
+    protected function respondWithToken($token)
     {
         return $this->successResponse([
             'token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => Auth::factory()->getTLL(),
+            'expires_in' => Auth::factory()->getTTL(),
         ], 200);
     }
 }

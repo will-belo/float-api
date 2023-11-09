@@ -36,6 +36,17 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         if ($this->auth->guard($guard)->guest()) {
+            try{
+                $token = auth()->payload();
+            }catch(\Exception $e){
+                if($e instanceof TokenInvalidException){
+                    return $this->errorResponse($e->getMessage(), Response::HTTP_NOT_FOUND);
+                }
+
+                if($e instanceof TokenExpiredException){
+                    return $this->errorResponse($e->getMessage(), Response::HTTP_UNAUTHORIZED);
+                }
+            }
             return response('Unauthorized.', 401);
         }
 
