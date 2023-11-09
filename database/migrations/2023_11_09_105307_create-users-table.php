@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique()->notNullable();
-            $table->string('password');
+            $table->string('client_secret');
+            $table->string('client_id');
             $table->timestamps();
         });
     }

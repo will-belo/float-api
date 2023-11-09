@@ -22,16 +22,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password', 'client_id', 'client_secret'
-    ];
-
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var string[]
-     */
-    protected $hidden = [
-        'password',
+        'name', 'email', 'client_id', 'client_secret'
     ];
 
     public function getJWTIdentifier()
@@ -42,13 +33,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    public function setPasswordAttribute($attribute)
-    {
-        $pass = Hash::make(($attribute));
-
-        $this->attributes['password'] = $pass;
     }
 
     public function setClientIdAttribute($attribute)
