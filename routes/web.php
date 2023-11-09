@@ -23,6 +23,10 @@ $router->group(['prefix' => 'api'], function () use ($router){
     $router->post('/login', 'AuthController@login');
 
     $router->group(['middleware' => 'auth'], function () use ($router){
-        $router->get('/test', 'AuthController@me');
+        $router->get('/skins', 'SkinsController@index');
+        $router->get('/skins/{id}', 'SkinsController@show');
+        $router->post('/skins', 'SkinsController@create');
+        $router->put('/skins/{id}', 'SkinsController@update');
+        $router->delete('/skins/{id}', 'SkinsController@destroy');
     });
 });

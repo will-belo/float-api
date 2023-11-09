@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('skins', function(Blueprint $table){
             $table->id();
             $table->string('weapon');
-            $table->string('skin_name');
+            $table->string('skin_name')->unique();
             $table->string('float');
             $table->double('price', 8, 2);
             $table->timestamps();
