@@ -6,7 +6,7 @@ use App\Models\Skin;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Validator;
 
 class SkinsController extends Controller
 {
@@ -37,6 +37,17 @@ class SkinsController extends Controller
      */
     public function create(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'weapon' => 'required|string|max:255',
+            'skin_name' => 'required|string|unique:'.Skin::class,
+            'float' => 'required|decimal:2,5',
+            'price' => 'required|decimal:2',
+        ]);
+        
+        if ( $validator->fails() ){
+            return $this->errorResponse($validator->messages(), Response::HTTP_BAD_REQUEST);
+        }
+        
         try{
             $skin = Skin::create([
                 'weapon' => $request->weapon,
@@ -82,6 +93,17 @@ class SkinsController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $validator = Validator::make($request->all(), [
+            'weapon' => 'string|max:255',
+            'skin_name' => 'string',
+            'float' => 'decimal:2,5',
+            'price' => 'decimal:2',
+        ]);
+        
+        if ( $validator->fails() ){
+            return $this->errorResponse($validator->messages(), Response::HTTP_BAD_REQUEST);
+        }
+
         $skin = Skin::find($id);
 
         $skin->weapon = $request->weapon ? $request->weapon : $skin->weapon;
